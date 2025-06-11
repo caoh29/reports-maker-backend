@@ -24,6 +24,7 @@ export class PdfService {
       'employment-letter-template.pdf',
       pdf.toString(),
     );
+    pdf.info.Title = 'employment-letter-template';
     return pdf;
   }
 
@@ -60,6 +61,7 @@ export class PdfService {
       pdf.toString(),
     );
 
+    pdf.info.Title = `employment-letter-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
     return pdf;
   }
   create(createPdfDto: CreatePdfDto) {
