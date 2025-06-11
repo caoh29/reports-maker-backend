@@ -16,4 +16,5 @@ model employees {
   work_time     DateTime @db.Time(6)
   hours_per_day Int
   work_schedule String   @db.VarChar(50)
+  is_active     Boolean  @default(true)
 }
