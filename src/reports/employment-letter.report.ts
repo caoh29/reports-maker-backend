@@ -27,25 +27,22 @@ export const getEmploymentLetterReport = (): TDocumentDefinitions => {
     header: getHeader(),
 
     content: [
+      { text: 'EMPLOYMENT CERTIFICATE', style: 'header' },
       {
-        text: 'CONSTANCIA DE EMPLEO',
-        style: 'header',
-      },
-      {
-        text: `Yo, [Nombre del Empleador], en mi calidad de [Cargo del Empleador] de [Nombre de la Empresa], por medio de la presente certifico que [Nombre del Empleado] ha sido empleado en nuestra empresa desde el [Fecha de Inicio del Empleado]. \n\n
-        Durante su empleo, el Sr./Sra. [Nombre del Empleado] ha desempeñado el cargo de [Cargo del Empleado], demostrando responsabilidad, compromiso y habilidades profesionales en sus labores.\n\n
-        La jornada laboral del Sr./ Sra. [Nombre del Empleado] es de [Número de Horas] horas diarias, con un horario de [Horario de Trabajo], cumpliendo con las políticas y procedimientos establecidos por la empresa.\n\n
-        Esta constancia se expide a solicitud del interesado para los fines que considere conveniente. \n\n`,
+        text: `I, [Employer Name], in my capacity as [Employer Position] at [Company Name], hereby certify that [Employee Name] has been employed with our company since [Start Date of Employment].\n\n
+        During their employment, Mr./Ms. [Employee Name] has held the position of [Employee Position], demonstrating responsibility, commitment, and professional skills in their duties.\n\n
+        Mr./Ms. [Employee Name] works [Number of Hours] hours per day, following the schedule of [Work Schedule], and complies with the company’s policies and procedures.\n\n
+        This certificate is issued at the request of the interested party for whatever purposes they deem necessary.\n\n`,
         style: 'body',
       },
-      { text: `Atentamente`, style: 'signature' },
-      { text: `[Nombre del Empleador] `, style: 'signature' },
-      { text: `[Cargo del Empleador]`, style: 'signature' },
-      { text: `[Nombre de la Empresa]`, style: 'signature' },
-      { text: `[Fecha de Emisión]`, style: 'signature' },
+      { text: 'Sincerely', style: 'signature' },
+      { text: '[Employer Name]', style: 'signature' },
+      { text: '[Employer Position]', style: 'signature' },
+      { text: '[Company Name]', style: 'signature' },
+      { text: '[Date of Issue]', style: 'signature' },
     ],
 
-    footer: getFooter('Constancia de Empleo'),
+    footer: getFooter('Employment Certificate'),
   };
 
   return docDefinition;

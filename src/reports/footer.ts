@@ -2,7 +2,7 @@ import { Content } from 'pdfmake/interfaces';
 
 export const getFooter = (documentName: string): Content => {
   const footerText: Content = {
-    text: `Este documento es una ${documentName} y no representa un compromiso laboral.`,
+    text: `This document is a ${documentName} and does not represent a job offer.`,
     alignment: 'center',
     italics: true,
     margin: [0, 0, 0, 20],

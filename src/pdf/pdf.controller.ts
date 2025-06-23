@@ -36,27 +36,46 @@ export class PdfController {
     pdf.end();
   }
 
-  @Post()
-  create(@Body() createPdfDto: CreatePdfDto) {
-    return this.pdfService.create(createPdfDto);
-  }
-  @Get()
-  findAll() {
-    return this.pdfService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pdfService.findOne(+id);
+  @Get('salary-certificate')
+  async getSalaryCertificate(@Res() response: Response) {
+    const pdf = await this.pdfService.getSalaryCertificateTemplate();
+    response.setHeader('Content-Type', 'application/pdf');
+    pdf.pipe(response);
+    pdf.end();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePdfDto: UpdatePdfDto) {
-    return this.pdfService.update(+id, updatePdfDto);
+  @Get('salary-certificate/:id')
+  async getSalaryCertificateById(
+    @Res() response: Response,
+    @Param('id') id: string,
+  ) {
+    const pdf = await this.pdfService.getSalaryCertificateByEmployeeId(id);
+    response.setHeader('Content-Type', 'application/pdf');
+    pdf.pipe(response);
+    pdf.end();
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pdfService.remove(+id);
-  }
+  // @Post()
+  // create(@Body() createPdfDto: CreatePdfDto) {
+  //   return this.pdfService.create(createPdfDto);
+  // }
+  // @Get()
+  // findAll() {
+  //   return this.pdfService.findAll();
+  // }
+
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.pdfService.findOne(+id);
+  // }
+
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updatePdfDto: UpdatePdfDto) {
+  //   return this.pdfService.update(+id, updatePdfDto);
+  // }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.pdfService.remove(+id);
+  // }
 }

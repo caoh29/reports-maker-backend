@@ -21,23 +21,20 @@ const styles: StyleDictionary = {
   },
 };
 
-export const getEmploymentLetterReportById = (
+export const getSalaryCertificateReportById = (
   employee: Employee,
   hrManager: Employee,
 ): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     styles: styles,
     pageMargins: [40, 60, 40, 60],
-
     header: getHeader(),
 
     content: [
-      { text: 'EMPLOYMENT CERTIFICATE', style: 'header' },
+      { text: 'SALARY CERTIFICATE', style: 'header' },
       {
-        text: `I, ${hrManager.name}, in my capacity as ${hrManager.position} at ${COMPANY_NAME}, hereby certify that ${employee.name} identified with ${employee.document_type} #${employee.document_number} has been employed with our company since ${DateFormatter.getDDMMYYYY(employee.start_date)}. \n\n
-        During their employment, Mr./Ms. ${employee.name} has held the position of ${employee.position}, demonstrating responsibility, commitment, and professional skills in their duties.\n\n
-        Mr./Ms. ${employee.name} works ${employee.hours_per_day} hours per day, following the schedule of ${employee.work_schedule}, and complies with the company’s policies and procedures.\n\n
-        This certificate is issued at the request of the interested party for whatever purposes they deem necessary. \n\n`,
+        text: `I, ${hrManager.name}, in my role as ${hrManager.position} at ${COMPANY_NAME}, hereby certify that Mr./Ms. ${employee.name}, identified with ${employee.document_type} #${employee.document_number}, has been employed with us since ${DateFormatter.getDDMMYYYY(employee.start_date)}. Currently, he/she holds the position of ${employee.position} in the ${employee.department} department with a ${employee.contract_type.toLowerCase()} contract. Based on this type of contract the amount paid is $${employee.contract_type === 'SALARIED' ? employee.salary : employee.hourly_rate} USD ${employee.contract_type === 'SALARIED' ? 'annually' : 'hourly'}, subject to legal deductions.\n\n
+        This certificate is issued at the request of the employee.\n\n`,
         style: 'body',
       },
       { text: 'Sincerely', style: 'signature' },
@@ -47,7 +44,7 @@ export const getEmploymentLetterReportById = (
       { text: `${DateFormatter.getDDMMYYYY(new Date())}`, style: 'signature' },
     ],
 
-    footer: getFooter('Employment Certificate'),
+    footer: getFooter('Salary Certificate'),
   };
 
   return docDefinition;

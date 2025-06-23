@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import fs from 'fs';
+import fsPromises from 'fs/promises';
 import path from 'path';
 
 @Injectable()
@@ -12,9 +13,9 @@ export class SaveFileService {
       console.log(`File ${fileName} already exists. Located in ${filePath}`);
     } else {
       // Write the content to the file
-      fs.mkdirSync(path.dirname(filePath), { recursive: true });
-      fs.writeFileSync(filePath, content);
+      await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
+      await fsPromises.writeFile(filePath, content);
     }
-    return Promise.resolve(filePath);
+    return filePath;
   }
 }

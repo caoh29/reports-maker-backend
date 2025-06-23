@@ -8,13 +8,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model employees {
-  id            Int      @id @default(autoincrement())
-  name          String   @db.VarChar(100)
-  position      String   @db.VarChar(50)
-  start_date    DateTime @db.Date
-  work_time     DateTime @db.Time(6)
-  hours_per_day Int
-  work_schedule String   @db.VarChar(50)
-  is_active     Boolean  @default(true)
+model Employee {
+  id              Int          @id @default(autoincrement())
+  name            String       @db.VarChar(100)
+  position        String       @db.VarChar(50)
+  start_date      DateTime     @db.Date
+  work_time       DateTime     @db.Time(6)
+  hours_per_day   Int
+  work_schedule   String       @db.VarChar(50)
+  is_active       Boolean      @default(true)
+  document_type   String       @db.VarChar(30)
+  document_number String       @unique @db.VarChar(50)
+  created_at      DateTime     @default(now()) @db.Timestamp(6)
+  updated_at      DateTime     @updatedAt @db.Timestamp(6)
+  salary          Float?
+  hourly_rate     Float?
+  contract_type   ContractType @default(SALARIED)
+
+  department_id Int
+  department    Department @relation(fields: [department_id], references: [id])
+
+  benefits EmployeeBenefit[]
+}
+
+model Benefit {
+  id        Int               @id @default(autoincrement())
+  name      String            @db.VarChar(100)
+  employees EmployeeBenefit[]
+}
+
+model EmployeeBenefit {
+  employee_id Int
+  benefit_id  Int
+
+  employee Employee @relation(fields: [employee_id], references: [id])
+  benefit  Benefit  @relation(fields: [benefit_id], references: [id])
+
+  @@id([employee_id, benefit_id])
+}
+
+model Department {
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(100)
+  employees Employee[]
+}
+
+enum ContractType {
+  SALARIED
+  HOURLY
 }
