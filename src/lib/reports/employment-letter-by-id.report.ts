@@ -1,11 +1,10 @@
 import type { StyleDictionary, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { getHeader } from './header';
-import { getFooter } from './footer';
-import { COMPANY_NAME, Employee } from 'src/types';
-import { DateFormatter } from 'src/helpers/date-formatter';
+import { getHeader, getSignature, getFooter } from './shared';
+import { COMPANY_NAME, Employee } from 'src/lib/types';
+import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 const styles: StyleDictionary = {
-  header: {
+  title: {
     fontSize: 22,
     bold: true,
     alignment: 'center',
@@ -14,10 +13,6 @@ const styles: StyleDictionary = {
   body: {
     alignment: 'justify',
     margin: [0, 0, 0, 70],
-  },
-  signature: {
-    fontSize: 14,
-    bold: true,
   },
 };
 
@@ -32,7 +27,7 @@ export const getEmploymentLetterReportById = (
     header: getHeader(),
 
     content: [
-      { text: 'EMPLOYMENT CERTIFICATE', style: 'header' },
+      { text: 'EMPLOYMENT CERTIFICATE', style: 'title' },
       {
         text: `I, ${hrManager.name}, in my capacity as ${hrManager.position} at ${COMPANY_NAME}, hereby certify that ${employee.name} identified with ${employee.document_type} #${employee.document_number} has been employed with our company since ${DateFormatter.getDDMMYYYY(employee.start_date)}. \n\n
         During their employment, Mr./Ms. ${employee.name} has held the position of ${employee.position}, demonstrating responsibility, commitment, and professional skills in their duties.\n\n
@@ -40,11 +35,7 @@ export const getEmploymentLetterReportById = (
         This certificate is issued at the request of the interested party for whatever purposes they deem necessary. \n\n`,
         style: 'body',
       },
-      { text: 'Sincerely', style: 'signature' },
-      { text: `${hrManager.name} `, style: 'signature' },
-      { text: `${hrManager.position}`, style: 'signature' },
-      { text: `${COMPANY_NAME}`, style: 'signature' },
-      { text: `${DateFormatter.getDDMMYYYY(new Date())}`, style: 'signature' },
+      getSignature(hrManager),
     ],
 
     footer: getFooter('Employment Certificate'),

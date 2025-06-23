@@ -1,6 +1,8 @@
-export const enum ReportType {
-  EMPLOYMENT_LETTER = 'employment-letter',
-}
+// export const enum ReportType {
+//   EMPLOYMENT_LETTER = 'employment-letter',
+// }
+
+export const COMPANY_NAME = 'Casas Inc';
 
 export interface Employee {
   id: number;
@@ -21,5 +23,3 @@ export interface Employee {
   department: string;
   benefits: string;
 }
-
-export const COMPANY_NAME = 'Casas Inc';

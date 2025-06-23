@@ -9,9 +9,13 @@ import {
   getEmploymentLetterReportById,
   getSalaryCertificateReport,
   getSalaryCertificateReportById,
-} from 'src/reports';
-import { DateFormatter } from 'src/helpers/date-formatter';
-import { Employee } from 'src/types';
+  getIncomeProofReport,
+  getIncomeProofReportById,
+  getWorkScheduleCertificateReport,
+  getWorkScheduleCertificateReportById,
+} from 'src/lib/reports';
+import { DateFormatter } from 'src/lib/helpers/date-formatter';
+import { Employee } from 'src/lib/types';
 
 @Injectable()
 export class PdfService {
@@ -128,6 +132,28 @@ export class PdfService {
     return pdf;
   }
 
+  async getIncomeProofTemplate() {
+    const pdf = this.printerService.generatePdf(getIncomeProofReport());
+    await this.saveFileService.saveFile(
+      'income-proof-template.pdf',
+      pdf.toString(),
+    );
+    pdf.info.Title = 'income-proof-template';
+    return pdf;
+  }
+
+  async getWorkScheduleCertificateTemplate() {
+    const pdf = this.printerService.generatePdf(
+      getWorkScheduleCertificateReport(),
+    );
+    await this.saveFileService.saveFile(
+      'work-schedule-certificate-template.pdf',
+      pdf.toString(),
+    );
+    pdf.info.Title = 'work-schedule-certificate-template';
+    return pdf;
+  }
+
   async getEmploymentLetterByEmployeeId(id: string) {
     const employee = await this.getEmployeeById(id);
     const hrManager = await this.getHrManager();
@@ -159,6 +185,40 @@ export class PdfService {
     );
 
     pdf.info.Title = `salary-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
+    return pdf;
+  }
+
+  async getIncomeProofByEmployeeId(id: string) {
+    const employee = await this.getEmployeeById(id);
+    const hrManager = await this.getHrManager();
+
+    const pdf = this.printerService.generatePdf(
+      getIncomeProofReportById(employee, hrManager),
+    );
+
+    await this.saveFileService.saveFile(
+      `income-proof-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
+      pdf.toString(),
+    );
+
+    pdf.info.Title = `income-proof-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
+    return pdf;
+  }
+
+  async getWorkScheduleCertificateByEmployeeId(id: string) {
+    const employee = await this.getEmployeeById(id);
+    const hrManager = await this.getHrManager();
+
+    const pdf = this.printerService.generatePdf(
+      getWorkScheduleCertificateReportById(employee, hrManager),
+    );
+
+    await this.saveFileService.saveFile(
+      `work-schedule-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
+      pdf.toString(),
+    );
+
+    pdf.info.Title = `work-schedule-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
     return pdf;
   }
   // create(createPdfDto: CreatePdfDto) {

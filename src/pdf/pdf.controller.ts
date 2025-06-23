@@ -55,6 +55,41 @@ export class PdfController {
     pdf.end();
   }
 
+  @Get('income-proof')
+  async getIncomeProof(@Res() response: Response) {
+    const pdf = await this.pdfService.getIncomeProofTemplate();
+    response.setHeader('Content-Type', 'application/pdf');
+    pdf.pipe(response);
+    pdf.end();
+  }
+
+  @Get('income-proof/:id')
+  async getIncomeProofById(@Res() response: Response, @Param('id') id: string) {
+    const pdf = await this.pdfService.getIncomeProofByEmployeeId(id);
+    response.setHeader('Content-Type', 'application/pdf');
+    pdf.pipe(response);
+    pdf.end();
+  }
+
+  @Get('work-schedule-certificate')
+  async getWorkScheduleCertificate(@Res() response: Response) {
+    const pdf = await this.pdfService.getWorkScheduleCertificateTemplate();
+    response.setHeader('Content-Type', 'application/pdf');
+    pdf.pipe(response);
+    pdf.end();
+  }
+
+  @Get('work-schedule-certificate/:id')
+  async getWorkScheduleCertificateById(
+    @Res() response: Response,
+    @Param('id') id: string,
+  ) {
+    const pdf = await this.pdfService.getWorkScheduleCertificateByEmployeeId(id);
+    response.setHeader('Content-Type', 'application/pdf');
+    pdf.pipe(response);
+    pdf.end();
+  }
+
   // @Post()
   // create(@Body() createPdfDto: CreatePdfDto) {
   //   return this.pdfService.create(createPdfDto);

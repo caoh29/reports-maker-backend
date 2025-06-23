@@ -1,11 +1,10 @@
 import type { StyleDictionary, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { getHeader } from './header';
-import { getFooter } from './footer';
-import { COMPANY_NAME, Employee } from 'src/types';
-import { DateFormatter } from 'src/helpers/date-formatter';
+import { getHeader, getSignature, getFooter } from './shared';
+import { COMPANY_NAME, Employee } from 'src/lib/types';
+import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 const styles: StyleDictionary = {
-  header: {
+  title: {
     fontSize: 22,
     bold: true,
     alignment: 'center',
@@ -14,10 +13,6 @@ const styles: StyleDictionary = {
   body: {
     alignment: 'justify',
     margin: [0, 0, 0, 70],
-  },
-  signature: {
-    fontSize: 14,
-    bold: true,
   },
 };
 
@@ -31,17 +26,13 @@ export const getSalaryCertificateReportById = (
     header: getHeader(),
 
     content: [
-      { text: 'SALARY CERTIFICATE', style: 'header' },
+      { text: 'SALARY CERTIFICATE', style: 'title' },
       {
         text: `I, ${hrManager.name}, in my role as ${hrManager.position} at ${COMPANY_NAME}, hereby certify that Mr./Ms. ${employee.name}, identified with ${employee.document_type} #${employee.document_number}, has been employed with us since ${DateFormatter.getDDMMYYYY(employee.start_date)}. Currently, he/she holds the position of ${employee.position} in the ${employee.department} department with a ${employee.contract_type.toLowerCase()} contract. Based on this type of contract the amount paid is $${employee.contract_type === 'SALARIED' ? employee.salary : employee.hourly_rate} USD ${employee.contract_type === 'SALARIED' ? 'annually' : 'hourly'}, subject to legal deductions.\n\n
         This certificate is issued at the request of the employee.\n\n`,
         style: 'body',
       },
-      { text: 'Sincerely', style: 'signature' },
-      { text: `${hrManager.name} `, style: 'signature' },
-      { text: `${hrManager.position}`, style: 'signature' },
-      { text: `${COMPANY_NAME}`, style: 'signature' },
-      { text: `${DateFormatter.getDDMMYYYY(new Date())}`, style: 'signature' },
+      getSignature(hrManager),
     ],
 
     footer: getFooter('Salary Certificate'),

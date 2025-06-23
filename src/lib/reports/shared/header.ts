@@ -1,5 +1,5 @@
 import { Content } from 'pdfmake/interfaces';
-import { DateFormatter } from '../helpers/date-formatter';
+import { DateFormatter } from '../../helpers/date-formatter';
 
 export const getHeader = (): Content => {
   const headerLogo: Content = {
