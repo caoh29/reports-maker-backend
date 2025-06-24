@@ -1,6 +1,7 @@
 import type { StyleDictionary, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { getHeader, getSignature, getFooter } from './shared';
-import { COMPANY_NAME, Employee } from 'src/lib/types';
+import { COMPANY_NAME } from 'src/lib/constants';
+import { EmployeeEntity } from 'src/employee/entities/employee.entity';
 
 const styles: StyleDictionary = {
   title: {
@@ -16,8 +17,8 @@ const styles: StyleDictionary = {
 };
 
 export const getWorkScheduleCertificateReportById = (
-  employee: Employee,
-  hrManager: Employee,
+  employee: EmployeeEntity,
+  hrManager: EmployeeEntity,
 ): TDocumentDefinitions => {
   return {
     styles: styles,
