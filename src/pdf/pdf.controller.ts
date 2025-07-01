@@ -25,31 +25,9 @@ export class PdfController {
     pdf.end();
   }
 
-  @Get('employment-letter/:id')
-  async getEmploymentLetterById(
-    @Res() response: Response,
-    @Param('id') id: string,
-  ) {
-    const pdf = await this.pdfService.getEmploymentLetterByEmployeeId(id);
-    response.setHeader('Content-Type', 'application/pdf');
-    pdf.pipe(response);
-    pdf.end();
-  }
-
   @Get('salary-certificate')
   async getSalaryCertificate(@Res() response: Response) {
     const pdf = await this.pdfService.getSalaryCertificateTemplate();
-    response.setHeader('Content-Type', 'application/pdf');
-    pdf.pipe(response);
-    pdf.end();
-  }
-
-  @Get('salary-certificate/:id')
-  async getSalaryCertificateById(
-    @Res() response: Response,
-    @Param('id') id: string,
-  ) {
-    const pdf = await this.pdfService.getSalaryCertificateByEmployeeId(id);
     response.setHeader('Content-Type', 'application/pdf');
     pdf.pipe(response);
     pdf.end();
@@ -63,14 +41,6 @@ export class PdfController {
     pdf.end();
   }
 
-  @Get('income-proof/:id')
-  async getIncomeProofById(@Res() response: Response, @Param('id') id: string) {
-    const pdf = await this.pdfService.getIncomeProofByEmployeeId(id);
-    response.setHeader('Content-Type', 'application/pdf');
-    pdf.pipe(response);
-    pdf.end();
-  }
-
   @Get('work-schedule-certificate')
   async getWorkScheduleCertificate(@Res() response: Response) {
     const pdf = await this.pdfService.getWorkScheduleCertificateTemplate();
@@ -79,16 +49,57 @@ export class PdfController {
     pdf.end();
   }
 
-  @Get('work-schedule-certificate/:id')
-  async getWorkScheduleCertificateById(
+  @Post('employment-letter')
+  async createEmploymentLetter(
+    @Body() createPdfDto: CreatePdfDto,
     @Res() response: Response,
-    @Param('id') id: string,
   ) {
-    const pdf = await this.pdfService.getWorkScheduleCertificateByEmployeeId(id);
+    const pdf = await this.pdfService.createEmploymentLetter(createPdfDto);
     response.setHeader('Content-Type', 'application/pdf');
     pdf.pipe(response);
     pdf.end();
   }
+
+  // @Get('employment-letter/:id')
+  // async getEmploymentLetterById(
+  //   @Res() response: Response,
+  //   @Param('id') id: string,
+  // ) {
+  //   const pdf = await this.pdfService.getEmploymentLetterByEmployeeId(id);
+  //   response.setHeader('Content-Type', 'application/pdf');
+  //   pdf.pipe(response);
+  //   pdf.end();
+  // }
+
+  // @Get('salary-certificate/:id')
+  // async getSalaryCertificateById(
+  //   @Res() response: Response,
+  //   @Param('id') id: string,
+  // ) {
+  //   const pdf = await this.pdfService.getSalaryCertificateByEmployeeId(id);
+  //   response.setHeader('Content-Type', 'application/pdf');
+  //   pdf.pipe(response);
+  //   pdf.end();
+  // }
+
+  // @Get('income-proof/:id')
+  // async getIncomeProofById(@Res() response: Response, @Param('id') id: string) {
+  //   const pdf = await this.pdfService.getIncomeProofByEmployeeId(id);
+  //   response.setHeader('Content-Type', 'application/pdf');
+  //   pdf.pipe(response);
+  //   pdf.end();
+  // }
+
+  // @Get('work-schedule-certificate/:id')
+  // async getWorkScheduleCertificateById(
+  //   @Res() response: Response,
+  //   @Param('id') id: string,
+  // ) {
+  //   const pdf = await this.pdfService.getWorkScheduleCertificateByEmployeeId(id);
+  //   response.setHeader('Content-Type', 'application/pdf');
+  //   pdf.pipe(response);
+  //   pdf.end();
+  // }
 
   // @Post()
   // create(@Body() createPdfDto: CreatePdfDto) {

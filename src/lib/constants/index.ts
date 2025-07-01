@@ -1,1 +1,1 @@
-export const COMPANY_NAME = 'Casas Inc';
+export const COLOR_YELLOW_HEX = '#ffff00';

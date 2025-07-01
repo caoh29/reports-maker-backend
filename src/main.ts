@@ -5,6 +5,12 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // FOR DEVELOPMENT
+  app.enableCors({
+    origin: 'http://localhost:3000', // allow only this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Employee Management')
     .setDescription('The employee management API description')

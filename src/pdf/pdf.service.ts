@@ -3,25 +3,25 @@ import { CreatePdfDto } from './dto/create-pdf.dto';
 import { UpdatePdfDto } from './dto/update-pdf.dto';
 import { PrinterService } from 'src/printer/printer.service';
 import { SaveFileService } from 'src/save-file/save-file.service';
-import { EmployeeService } from 'src/employee/employee.service';
+// import { EmployeeService } from 'src/employee/employee.service';
 import {
   getEmploymentLetterReport,
-  getEmploymentLetterReportById,
+  // getEmploymentLetterReportById,
   getSalaryCertificateReport,
-  getSalaryCertificateReportById,
+  // getSalaryCertificateReportById,
   getIncomeProofReport,
-  getIncomeProofReportById,
+  // getIncomeProofReportById,
   getWorkScheduleCertificateReport,
-  getWorkScheduleCertificateReportById,
-} from 'src/lib/reports';
-import { DateFormatter } from 'src/lib/helpers/date-formatter';
+  // getWorkScheduleCertificateReportById,
+} from './reports';
+// import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 @Injectable()
 export class PdfService {
   constructor(
     private readonly printerService: PrinterService,
     private readonly saveFileService: SaveFileService,
-    private readonly employeeService: EmployeeService,
+    // private readonly employeeService: EmployeeService,
   ) { }
 
   async getEmploymentLetterTemplate() {
@@ -66,89 +66,103 @@ export class PdfService {
     return pdf;
   }
 
-  async getEmploymentLetterByEmployeeId(id: string) {
-    // const employee = await this.employeeService.findOne(+id);
-    // const hrManager = await this.employeeService.findHrManager();
-    const [employee, hrManager] = await Promise.all([
-      this.employeeService.findOne(+id),
-      this.employeeService.findHrManager(),
-    ]);
-
+  async createEmploymentLetter(createPdfDto: CreatePdfDto) {
     const pdf = this.printerService.generatePdf(
-      getEmploymentLetterReportById(employee, hrManager),
+      getEmploymentLetterReport(createPdfDto),
     );
-
     await this.saveFileService.saveFile(
-      `employment-letter-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
+      `employment-letter-${createPdfDto.body.employee.name}.pdf`,
       pdf.toString(),
     );
-
-    pdf.info.Title = `employment-letter-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
+    pdf.info.Title = `employment-letter-${createPdfDto.body.employee.name}`;
     return pdf;
   }
 
-  async getSalaryCertificateByEmployeeId(id: string) {
-    // const employee = await this.employeeService.findOne(+id);
-    // const hrManager = await this.employeeService.findHrManager();
-    const [employee, hrManager] = await Promise.all([
-      this.employeeService.findOne(+id),
-      this.employeeService.findHrManager(),
-    ]);
+  // async getEmploymentLetterByEmployeeId(id: string) {
+  //   // const employee = await this.employeeService.findOne(+id);
+  //   // const hrManager = await this.employeeService.findHrManager();
+  //   const [employee, hrManager] = await Promise.all([
+  //     this.employeeService.findOne(+id),
+  //     this.employeeService.findHrManager(),
+  //   ]);
 
-    const pdf = this.printerService.generatePdf(
-      getSalaryCertificateReportById(employee, hrManager),
-    );
+  //   const pdf = this.printerService.generatePdf(
+  //     getEmploymentLetterReportById(employee, hrManager),
+  //   );
 
-    await this.saveFileService.saveFile(
-      `salary-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
-      pdf.toString(),
-    );
+  //   await this.saveFileService.saveFile(
+  //     `employment-letter-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
+  //     pdf.toString(),
+  //   );
 
-    pdf.info.Title = `salary-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
-    return pdf;
-  }
+  //   pdf.info.Title = `employment-letter-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
+  //   return pdf;
+  // }
 
-  async getIncomeProofByEmployeeId(id: string) {
-    // const employee = await this.employeeService.findOne(+id);
-    // const hrManager = await this.employeeService.findHrManager();
-    const [employee, hrManager] = await Promise.all([
-      this.employeeService.findOne(+id),
-      this.employeeService.findHrManager(),
-    ]);
+  // async getSalaryCertificateByEmployeeId(id: string) {
+  //   // const employee = await this.employeeService.findOne(+id);
+  //   // const hrManager = await this.employeeService.findHrManager();
+  //   const [employee, hrManager] = await Promise.all([
+  //     this.employeeService.findOne(+id),
+  //     this.employeeService.findHrManager(),
+  //   ]);
 
-    const pdf = this.printerService.generatePdf(
-      getIncomeProofReportById(employee, hrManager),
-    );
+  //   const pdf = this.printerService.generatePdf(
+  //     getSalaryCertificateReportById(employee, hrManager),
+  //   );
 
-    await this.saveFileService.saveFile(
-      `income-proof-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
-      pdf.toString(),
-    );
+  //   await this.saveFileService.saveFile(
+  //     `salary-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
+  //     pdf.toString(),
+  //   );
 
-    pdf.info.Title = `income-proof-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
-    return pdf;
-  }
+  //   pdf.info.Title = `salary-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
+  //   return pdf;
+  // }
 
-  async getWorkScheduleCertificateByEmployeeId(id: string) {
-    // const employee = await this.employeeService.findOne(+id);
-    // const hrManager = await this.employeeService.findHrManager();
-    const [employee, hrManager] = await Promise.all([
-      this.employeeService.findOne(+id),
-      this.employeeService.findHrManager(),
-    ]);
+  // async getIncomeProofByEmployeeId(id: string) {
+  //   // const employee = await this.employeeService.findOne(+id);
+  //   // const hrManager = await this.employeeService.findHrManager();
+  //   const [employee, hrManager] = await Promise.all([
+  //     this.employeeService.findOne(+id),
+  //     this.employeeService.findHrManager(),
+  //   ]);
 
-    const pdf = this.printerService.generatePdf(
-      getWorkScheduleCertificateReportById(employee, hrManager),
-    );
+  //   const pdf = this.printerService.generatePdf(
+  //     getIncomeProofReportById(employee, hrManager),
+  //   );
 
-    await this.saveFileService.saveFile(
-      `work-schedule-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
-      pdf.toString(),
-    );
+  //   await this.saveFileService.saveFile(
+  //     `income-proof-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
+  //     pdf.toString(),
+  //   );
 
-    pdf.info.Title = `work-schedule-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
-    return pdf;
-  }
+  //   pdf.info.Title = `income-proof-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
+  //   return pdf;
+  // }
+
+  // async getWorkScheduleCertificateByEmployeeId(id: string) {
+  //   // const employee = await this.employeeService.findOne(+id);
+  //   // const hrManager = await this.employeeService.findHrManager();
+  //   const [employee, hrManager] = await Promise.all([
+  //     this.employeeService.findOne(+id),
+  //     this.employeeService.findHrManager(),
+  //   ]);
+
+  //   const pdf = this.printerService.generatePdf(
+  //     getWorkScheduleCertificateReportById(employee, hrManager),
+  //   );
+
+  //   await this.saveFileService.saveFile(
+  //     `work-schedule-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}.pdf`,
+  //     pdf.toString(),
+  //   );
+
+  //   pdf.info.Title = `work-schedule-certificate-${employee.id}-${DateFormatter.getDDMMYYYY(new Date())}`;
+  //   return pdf;
+  // }
+
+
   // create(createPdfDto: CreatePdfDto) {
   //   return 'This action adds a new pdf';
   // }
