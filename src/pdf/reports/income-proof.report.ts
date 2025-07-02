@@ -21,7 +21,9 @@ export const getIncomeProofReport = (
         {
           text: options?.body.employee.name ?? '[Employee Name]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.name
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' identified with ',
@@ -29,7 +31,9 @@ export const getIncomeProofReport = (
           text:
             options?.body.employee.documentType ?? '[Employee Document Type]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.documentType
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' #',
@@ -38,14 +42,18 @@ export const getIncomeProofReport = (
             options?.body.employee.documentNumber ??
             '[Employee Document Number]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.documentNumber
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' receives an annual income of approximately $',
         {
           text: options?.body.employee.salary ?? '[Employee Start Date]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.salary
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' USD, which includes base salary and bonuses, and other employment-related benefits.\n\n',

@@ -16,13 +16,13 @@ export const getHeader = (headerData?: Header): Content => {
         text: headerData?.stamp?.companyName ?? '[Company Name]',
       },
       {
-        text: headerData?.stamp?.companyAddress ?? '[Company Data]',
+        text: headerData?.stamp?.companyPhone ?? '[Company Phone]',
       },
     ],
     style: {
       bold: true,
       fontSize: 12,
-      background: COLOR_YELLOW_HEX,
+      background: headerData?.stamp ? undefined : COLOR_YELLOW_HEX,
     },
     alignment: 'left',
     margin: [340, 0, 0, 0],

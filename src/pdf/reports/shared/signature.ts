@@ -11,6 +11,11 @@ export const getSignature = (signData?: Sign): Content => {
         text: 'Regards,\n\n\n',
       },
       {
+        image: signData?.signatureUrl ?? 'src/assets/100x100.png',
+        width: 50,
+        height: 50,
+      },
+      {
         text: '_______________________________',
         style: {
           bold: true,

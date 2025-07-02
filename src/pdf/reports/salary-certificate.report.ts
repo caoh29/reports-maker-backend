@@ -2,6 +2,7 @@ import type { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { getHeader, getSignature, getFooter, getDate } from './shared';
 import { CreatePdfDto } from '../dto/create-pdf.dto';
 import { COLOR_YELLOW_HEX } from 'src/lib/constants';
+import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 export const getSalaryCertificateReport = (
   options?: CreatePdfDto,
@@ -21,7 +22,9 @@ export const getSalaryCertificateReport = (
         {
           text: options?.body.employee.name ?? '[Employee Name]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.name
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' identified with ',
@@ -29,7 +32,9 @@ export const getSalaryCertificateReport = (
           text:
             options?.body.employee.documentType ?? '[Employee Document Type]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.documentType
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' #',
@@ -38,28 +43,38 @@ export const getSalaryCertificateReport = (
             options?.body.employee.documentNumber ??
             '[Employee Document Number]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.documentNumber
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ', has been employed with us since ',
         {
-          text: options?.body.employee.startDate ?? '[Employee Start Date]',
+          text: options?.body.employee.startDate
+            ? DateFormatter.getDDMMYYYY(options.body.employee.startDate)
+            : '[Employee Start Date]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.startDate
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         '. Currently, he/she holds the position of ',
         {
           text: options?.body.employee.role ?? '[Employee Role]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.role
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' in the ',
         {
           text: options?.body.employee.department ?? '[Employee Department]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.department
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' department with a ',
@@ -68,14 +83,18 @@ export const getSalaryCertificateReport = (
             options?.body.employee.contractType?.toLowerCase() ??
             '[Employee Contract Type]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.contractType
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' contract. Based on this type of contract the amount paid is $',
         {
           text: options?.body.employee.salary ?? '[Salary Amount]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.salary
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' USD ',
@@ -84,7 +103,9 @@ export const getSalaryCertificateReport = (
             options?.body.employee.contractType?.toLowerCase() ??
             '[Employee Contract Type]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.contractType
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ', subject to legal deductions.\n\n',

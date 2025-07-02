@@ -20,7 +20,9 @@ export const getWorkScheduleCertificateReport = (
         {
           text: options?.body.employee.name ?? '[Employee Name]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.name
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' identified with ',
@@ -28,7 +30,9 @@ export const getWorkScheduleCertificateReport = (
           text:
             options?.body.employee.documentType ?? '[Employee Document Type]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.documentType
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' #',
@@ -37,29 +41,37 @@ export const getWorkScheduleCertificateReport = (
             options?.body.employee.documentNumber ??
             '[Employee Document Number]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.documentNumber
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
-        ' currently works in teh following schedule: ',
+        ' currently works in the following schedule: ',
         {
           text:
             options?.body.employee.workSchedule ?? '[Employee Work schedule]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.workSchedule
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         '. Currently, he/she holds the position of ',
         {
           text: options?.body.employee.role ?? '[Employee Role]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.role
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' in the ',
         {
           text: options?.body.employee.department ?? '[Employee Department]',
           style: {
-            background: COLOR_YELLOW_HEX,
+            background: options?.body.employee.department
+              ? undefined
+              : COLOR_YELLOW_HEX,
           },
         },
         ' department.\n\n',

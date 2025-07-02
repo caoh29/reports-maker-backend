@@ -3,14 +3,14 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  // Patch,
+  // Param,
+  // Delete,
   Res,
 } from '@nestjs/common';
 import { PdfService } from './pdf.service';
 import { CreatePdfDto } from './dto/create-pdf.dto';
-import { UpdatePdfDto } from './dto/update-pdf.dto';
+// import { UpdatePdfDto } from './dto/update-pdf.dto';
 import { Response } from 'express';
 
 @Controller('pdf')

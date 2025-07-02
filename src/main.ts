@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +11,9 @@ async function bootstrap() {
     origin: 'http://localhost:3000', // allow only this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   });
+
+  // FOR TRANSFORMING PAYLOADS OBJECTS GLOBALLY
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const config = new DocumentBuilder()
     .setTitle('Employee Management')

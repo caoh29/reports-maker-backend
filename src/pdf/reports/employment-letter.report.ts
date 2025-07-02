@@ -1,10 +1,10 @@
 import type { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { getHeader, getSignature, getFooter, getDate } from './shared';
-import { COLOR_YELLOW_HEX } from 'src/lib/constants';
 import { CreatePdfDto } from '../dto/create-pdf.dto';
+import { COLOR_YELLOW_HEX } from 'src/lib/constants';
+import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 export const getEmploymentLetterReport = (
-  // options?: Options,
   options?: CreatePdfDto,
 ): TDocumentDefinitions => ({
   pageMargins: [30, 60, 30, 60],
@@ -52,14 +52,16 @@ export const getEmploymentLetterReport = (
         },
         ' has been employed with our company since ',
         {
-          text: options?.body.employee.startDate ?? '[Employee Start Date]',
+          text: options?.body.employee.startDate
+            ? DateFormatter.getDDMMYYYY(options.body.employee.startDate)
+            : '[Employee Start Date]',
           style: {
             background: options?.body.employee.startDate
               ? undefined
               : COLOR_YELLOW_HEX,
           },
         },
-        '\n\n',
+        '.\n\n',
         'During their employment, Mr./Ms. ',
         {
           text: options?.body.employee.name ?? '[Employee Name]',
