@@ -6,6 +6,8 @@ import { SaveFileModule } from './save-file/save-file.module';
 import { PdfModule } from './pdf/pdf.module';
 // import { PrismaModule } from './prisma/prisma.module';
 // import { EmployeeModule } from './employee/employee.module';
+import { ImageService } from './image/image.service';
+import { ImageModule } from './image/image.module';
 
 @Module({
   imports: [
@@ -17,8 +19,9 @@ import { PdfModule } from './pdf/pdf.module';
     PrinterModule,
     SaveFileModule,
     PdfModule,
+    ImageModule,
   ],
   controllers: [],
-  providers: [SaveFileService],
+  providers: [SaveFileService, ImageService],
 })
 export class AppModule { }

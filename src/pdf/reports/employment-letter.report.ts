@@ -1,19 +1,33 @@
 import type { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { getHeader, getSignature, getFooter, getDate } from './shared';
-import { CreatePdfDto } from '../dto/create-pdf.dto';
+import {
+  getHeader,
+  getSigner,
+  getFooter,
+  getDate,
+  getSignature,
+} from './shared';
+import { CreateEmploymentLetterDto } from '../dto/create-employment-letter.dto';
 import { COLOR_YELLOW_HEX } from 'src/lib/constants';
 import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 export const getEmploymentLetterReport = (
-  options?: CreatePdfDto,
+  options?: CreateEmploymentLetterDto,
+  files?: {
+    logo?: string[];
+    signature?: string[];
+  },
 ): TDocumentDefinitions => ({
   pageMargins: [30, 60, 30, 60],
   pageSize: 'A4',
 
-  header: getHeader(options?.header),
+  header: getHeader({
+    companyName: options?.companyName,
+    companyPhone: options?.companyPhone,
+    logo: files?.logo,
+  }),
 
   content: [
-    getDate(options?.body.date),
+    getDate(options?.date),
     {
       // text: `By this method we certified that ${options?.body.employee.name ?? '[Employee Name]'} has been employed with our company since [Start Date of Employment].\n\n
       //     During their employment, Mr./Ms. [Employee Name] has held the position of [Employee Position], demonstrating responsibility, commitment, and professional skills in their duties.\n\n
@@ -22,73 +36,73 @@ export const getEmploymentLetterReport = (
       text: [
         'By this method we certified that ',
         {
-          text: options?.body.employee.name ?? '[Employee Name]',
+          text: options?.employeeName ?? '[Employee Name]',
           style: {
-            background: options?.body.employee.name
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeName ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' identified with ',
         {
-          text:
-            options?.body.employee.documentType ?? '[Employee Document Type]',
+          text: options?.employeeIdType ?? '[Employee Document Type]',
           style: {
-            background: options?.body.employee.documentType
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeIdType ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' #',
         {
-          text:
-            options?.body.employee.documentNumber ??
-            '[Employee Document Number]',
+          text: options?.employeeId ?? '[Employee Document Number]',
           style: {
-            background: options?.body.employee.documentNumber
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeId ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' has been employed with our company since ',
         {
-          text: options?.body.employee.startDate
-            ? DateFormatter.getDDMMYYYY(options.body.employee.startDate)
+          text: options?.startDate
+            ? DateFormatter.getDDMMYYYY(new Date(options.startDate))
             : '[Employee Start Date]',
           style: {
-            background: options?.body.employee.startDate
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.startDate ? undefined : COLOR_YELLOW_HEX,
           },
         },
         '.\n\n',
         'During their employment, Mr./Ms. ',
         {
-          text: options?.body.employee.name ?? '[Employee Name]',
+          text: options?.employeeName ?? '[Employee Name]',
           style: {
-            background: options?.body.employee.name
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeName ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' has held the position of ',
         {
-          text: options?.body.employee.role ?? '[Employee Role]',
+          text: options?.role ?? '[Employee Role]',
           style: {
-            background: options?.body.employee.role
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.role ? undefined : COLOR_YELLOW_HEX,
           },
         },
-        ', demonstrating responsibility, commitment, and professional skills in their duties.\n\n',
-        'This certificate is issued at the request of the interested party for whatever purposes they deem necessary.',
+        'in the ',
+        {
+          text: options?.department ?? '[Employee Department]',
+          style: {
+            background: options?.department ? undefined : COLOR_YELLOW_HEX,
+          },
+        },
+        ' department, demonstrating responsibility, commitment, and professional skills in their duties.\n\n',
+        'This certificate is issued at the request of the interested party for whatever purposes they deem necessary.\n\n\n\n',
+        'Regards,\n\n\n\n',
       ],
       style: {
         alignment: 'justify',
         margin: [0, 10, 0, 10],
       },
     },
-    getSignature(options?.sign),
+    getSignature({
+      signature: files?.signature,
+    }),
+    getSigner({
+      signerName: options?.signerName,
+      signerRole: options?.signerRole,
+      companyName: options?.companyName,
+    }),
   ],
 
   footer: getFooter(options?.footer),

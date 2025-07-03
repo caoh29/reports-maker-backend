@@ -1,10 +1,23 @@
 import { Content } from 'pdfmake/interfaces';
-import { Header } from '../../entities/pdf.entity';
 import { COLOR_YELLOW_HEX } from 'src/lib/constants';
 
-export const getHeader = (headerData?: Header): Content => {
+interface Props {
+  companyName?: string;
+  companyPhone?: string;
+  logo?: string[];
+}
+
+export const getHeader = ({
+  companyName,
+  companyPhone,
+  logo,
+}: Props): Content => {
+  // If logo is not provided, use a default image
+  const headerLogoImage =
+    logo && logo.length > 0 ? logo[0] : 'src/assets/100x100.png';
+
   const headerLogo: Content = {
-    image: headerData?.logoUrl ?? 'src/assets/100x100.png',
+    image: headerLogoImage,
     width: 100,
     height: 100,
     alignment: 'left',
@@ -13,16 +26,16 @@ export const getHeader = (headerData?: Header): Content => {
   const headerCompanyInfo: Content = {
     stack: [
       {
-        text: headerData?.stamp?.companyName ?? '[Company Name]',
+        text: companyName ?? '[Company Name]',
       },
       {
-        text: headerData?.stamp?.companyPhone ?? '[Company Phone]',
+        text: companyPhone ?? '[Company Phone]',
       },
     ],
     style: {
       bold: true,
       fontSize: 12,
-      background: headerData?.stamp ? undefined : COLOR_YELLOW_HEX,
+      background: companyName && companyPhone ? undefined : COLOR_YELLOW_HEX,
     },
     alignment: 'left',
     margin: [340, 0, 0, 0],

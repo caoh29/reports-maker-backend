@@ -1,122 +1,121 @@
 import type { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { getHeader, getSignature, getFooter, getDate } from './shared';
-import { CreatePdfDto } from '../dto/create-pdf.dto';
+import {
+  getHeader,
+  getSigner,
+  getFooter,
+  getDate,
+  getSignature,
+} from './shared';
+import { CreateSalaryCertificateDto } from '../dto/create-salary-certificate.dto';
 import { COLOR_YELLOW_HEX } from 'src/lib/constants';
 import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 export const getSalaryCertificateReport = (
-  options?: CreatePdfDto,
+  options?: CreateSalaryCertificateDto,
+  files?: {
+    logo?: string[];
+    signature?: string[];
+  },
 ): TDocumentDefinitions => ({
   pageMargins: [30, 60, 30, 60],
   pageSize: 'A4',
 
-  header: getHeader(options?.header),
+  header: getHeader({
+    companyName: options?.companyName,
+    companyPhone: options?.companyPhone,
+    logo: files?.logo,
+  }),
 
   content: [
-    getDate(options?.body.date),
+    getDate(options?.date),
     {
       // text: `I, [Employer Name], in my role as [Employer Position] at [Company Name], hereby certify that Mr./Ms. [Employee Name], identified with [ID Type and Number], has been employed with us since [Start Date]. Currently, he/she holds the position of [Job Title] in the [Employee Department] department with a [Employee Contract Type] contract. Based on this type of contract the amount paid is $[Salary Amount] USD [annually/hourly], subject to legal deductions.\n\n
       //   This certificate is issued at the request of the employee.\n\n`,
       text: [
         'By this method we certified that ',
         {
-          text: options?.body.employee.name ?? '[Employee Name]',
+          text: options?.employeeName ?? '[Employee Name]',
           style: {
-            background: options?.body.employee.name
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeName ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' identified with ',
         {
-          text:
-            options?.body.employee.documentType ?? '[Employee Document Type]',
+          text: options?.employeeIdType ?? '[Employee Document Type]',
           style: {
-            background: options?.body.employee.documentType
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeIdType ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' #',
         {
-          text:
-            options?.body.employee.documentNumber ??
-            '[Employee Document Number]',
+          text: options?.employeeId ?? '[Employee Document Number]',
           style: {
-            background: options?.body.employee.documentNumber
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeId ? undefined : COLOR_YELLOW_HEX,
           },
         },
-        ', has been employed with us since ',
+        ' has been employed with our company since ',
         {
-          text: options?.body.employee.startDate
-            ? DateFormatter.getDDMMYYYY(options.body.employee.startDate)
+          text: options?.startDate
+            ? DateFormatter.getDDMMYYYY(new Date(options.startDate))
             : '[Employee Start Date]',
           style: {
-            background: options?.body.employee.startDate
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.startDate ? undefined : COLOR_YELLOW_HEX,
           },
         },
         '. Currently, he/she holds the position of ',
         {
-          text: options?.body.employee.role ?? '[Employee Role]',
+          text: options?.role ?? '[Employee Role]',
           style: {
-            background: options?.body.employee.role
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.role ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' in the ',
         {
-          text: options?.body.employee.department ?? '[Employee Department]',
+          text: options?.department ?? '[Employee Department]',
           style: {
-            background: options?.body.employee.department
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.department ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' department with a ',
         {
           text:
-            options?.body.employee.contractType?.toLowerCase() ??
-            '[Employee Contract Type]',
+            options?.contractType?.toLowerCase() ?? '[Employee Contract Type]',
           style: {
-            background: options?.body.employee.contractType
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.contractType ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' contract. Based on this type of contract the amount paid is $',
         {
-          text: options?.body.employee.salary ?? '[Salary Amount]',
+          text: options?.salary ?? '[Salary Amount]',
           style: {
-            background: options?.body.employee.salary
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.salary ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' USD ',
         {
           text:
-            options?.body.employee.contractType?.toLowerCase() ??
-            '[Employee Contract Type]',
+            options?.contractType?.toLowerCase() ?? '[Employee Contract Type]',
           style: {
-            background: options?.body.employee.contractType
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.contractType ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ', subject to legal deductions.\n\n',
-        'This certificate is issued at the request of the interested party for whatever purpose they deem necessary.\n\n',
+        'This certificate is issued at the request of the interested party for whatever purpose they deem necessary.\n\n\n\n',
+        'Regards,\n\n\n\n',
       ],
       style: {
         alignment: 'justify',
         margin: [0, 10, 0, 10],
       },
     },
-    getSignature(options?.sign),
+    getSignature({
+      signature: files?.signature,
+    }),
+    getSigner({
+      signerName: options?.signerName,
+      signerRole: options?.signerRole,
+      companyName: options?.companyName,
+    }),
   ],
 
   footer: getFooter(options?.footer),

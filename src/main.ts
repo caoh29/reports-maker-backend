@@ -16,10 +16,12 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const config = new DocumentBuilder()
-    .setTitle('Employee Management')
-    .setDescription('The employee management API description')
+    .setTitle('Reports Gen')
+    .setDescription(
+      'Generate pre-made reprots or custom report for your tailored needs!',
+    )
     .setVersion('1.0')
-    .addTag('employees')
+    .addTag('reprots')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

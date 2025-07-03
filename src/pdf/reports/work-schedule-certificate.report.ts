@@ -1,88 +1,94 @@
 import type { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { getHeader, getSignature, getFooter, getDate } from './shared';
-import { CreatePdfDto } from '../dto/create-pdf.dto';
+import {
+  getHeader,
+  getSigner,
+  getFooter,
+  getDate,
+  getSignature,
+} from './shared';
+import { CreateWorkScheduleCertificateDto } from '../dto/create-work-schedule-certificate.dto';
 import { COLOR_YELLOW_HEX } from 'src/lib/constants';
 export const getWorkScheduleCertificateReport = (
-  options?: CreatePdfDto,
+  options?: CreateWorkScheduleCertificateDto,
+  files?: {
+    logo?: string[];
+    signature?: string[];
+  },
 ): TDocumentDefinitions => ({
   pageMargins: [30, 60, 30, 60],
   pageSize: 'A4',
 
-  header: getHeader(options?.header),
+  header: getHeader({
+    companyName: options?.companyName,
+    companyPhone: options?.companyPhone,
+    logo: files?.logo,
+  }),
 
   content: [
-    getDate(options?.body.date),
+    getDate(options?.date),
     {
       // text: `I, [Employer Name], in my role as [Employer Position] at [Company Name], hereby certify that Mr./Ms. [Employee Name] currently works [Weekly Hours] hours per week at [Company Name], with a schedule from [Work Schedule], Monday through Friday.\n\n
       //   This certificate is issued upon request.\n\n`,
       text: [
         'By this method we certified that ',
         {
-          text: options?.body.employee.name ?? '[Employee Name]',
+          text: options?.employeeName ?? '[Employee Name]',
           style: {
-            background: options?.body.employee.name
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeName ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' identified with ',
         {
-          text:
-            options?.body.employee.documentType ?? '[Employee Document Type]',
+          text: options?.employeeIdType ?? '[Employee Document Type]',
           style: {
-            background: options?.body.employee.documentType
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeIdType ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' #',
         {
-          text:
-            options?.body.employee.documentNumber ??
-            '[Employee Document Number]',
+          text: options?.employeeId ?? '[Employee Document Number]',
           style: {
-            background: options?.body.employee.documentNumber
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.employeeId ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' currently works in the following schedule: ',
         {
-          text:
-            options?.body.employee.workSchedule ?? '[Employee Work schedule]',
+          text: options?.workSchedule ?? '[Employee Work schedule]',
           style: {
-            background: options?.body.employee.workSchedule
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.workSchedule ? undefined : COLOR_YELLOW_HEX,
           },
         },
         '. Currently, he/she holds the position of ',
         {
-          text: options?.body.employee.role ?? '[Employee Role]',
+          text: options?.role ?? '[Employee Role]',
           style: {
-            background: options?.body.employee.role
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.role ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' in the ',
         {
-          text: options?.body.employee.department ?? '[Employee Department]',
+          text: options?.department ?? '[Employee Department]',
           style: {
-            background: options?.body.employee.department
-              ? undefined
-              : COLOR_YELLOW_HEX,
+            background: options?.department ? undefined : COLOR_YELLOW_HEX,
           },
         },
         ' department.\n\n',
-        'This certificate is issued at the request of the interested party for whatever purpose they deem necessary.\n\n',
+        'This certificate is issued at the request of the interested party for whatever purpose they deem necessary.\n\n\n\n',
+        'Regards,\n\n\n\n',
       ],
       style: {
         alignment: 'justify',
         margin: [0, 10, 0, 10],
       },
     },
-    getSignature(options?.sign),
+    getSignature({
+      signature: files?.signature,
+    }),
+    getSigner({
+      signerName: options?.signerName,
+      signerRole: options?.signerRole,
+      companyName: options?.companyName,
+    }),
   ],
 
   footer: getFooter(options?.footer),

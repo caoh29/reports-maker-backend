@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePdfDto } from './dto/create-pdf.dto';
-import { UpdatePdfDto } from './dto/update-pdf.dto';
+// import { CreatePdfDto } from './dto/create-pdf.dto';
+// import { UpdatePdfDto } from './dto/update-pdf.dto';
 import { PrinterService } from 'src/printer/printer.service';
 import { SaveFileService } from 'src/save-file/save-file.service';
 // import { EmployeeService } from 'src/employee/employee.service';
@@ -14,6 +14,11 @@ import {
   getWorkScheduleCertificateReport,
   // getWorkScheduleCertificateReportById,
 } from './reports';
+import { ImageService } from 'src/image/image.service';
+import { CreateEmploymentLetterDto } from './dto/create-employment-letter.dto';
+import { CreateIncomeProofDto } from './dto/create-income-proof.dto';
+import { CreateSalaryCertificateDto } from './dto/create-salary-certificate.dto';
+import { CreateWorkScheduleCertificateDto } from './dto/create-work-schedule-certificate.dto';
 // import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 @Injectable()
@@ -21,6 +26,7 @@ export class PdfService {
   constructor(
     private readonly printerService: PrinterService,
     private readonly saveFileService: SaveFileService,
+    private readonly imageService: ImageService,
     // private readonly employeeService: EmployeeService,
   ) { }
 
@@ -66,15 +72,83 @@ export class PdfService {
     return pdf;
   }
 
-  async createEmploymentLetter(createPdfDto: CreatePdfDto) {
+  async createEmploymentLetter(
+    createPdfDto: CreateEmploymentLetterDto,
+    files: {
+      logo?: Express.Multer.File[];
+      signature?: Express.Multer.File[];
+    },
+  ) {
+    const savedImages = await this.imageService.saveImages(files);
     const pdf = this.printerService.generatePdf(
-      getEmploymentLetterReport(createPdfDto),
+      getEmploymentLetterReport(createPdfDto, savedImages),
     );
+    await this.imageService.deleteImages(files);
     await this.saveFileService.saveFile(
-      `employment-letter-${createPdfDto.body.employee.name}.pdf`,
+      `employment-letter-${createPdfDto.employeeName}.pdf`,
       pdf.toString(),
     );
-    pdf.info.Title = `employment-letter-${createPdfDto.body.employee.name}`;
+    pdf.info.Title = `employment-letter-${createPdfDto.employeeName}`;
+    return pdf;
+  }
+
+  async createIncomeProof(
+    createPdfDto: CreateIncomeProofDto,
+    files: {
+      logo?: Express.Multer.File[];
+      signature?: Express.Multer.File[];
+    },
+  ) {
+    const savedImages = await this.imageService.saveImages(files);
+    const pdf = this.printerService.generatePdf(
+      getIncomeProofReport(createPdfDto, savedImages),
+    );
+    await this.imageService.deleteImages(files);
+    await this.saveFileService.saveFile(
+      `income-proof-${createPdfDto.employeeName}.pdf`,
+      pdf.toString(),
+    );
+    pdf.info.Title = `income-proof-${createPdfDto.employeeName}`;
+    return pdf;
+  }
+
+  async createSalaryCertificate(
+    createPdfDto: CreateSalaryCertificateDto,
+    files: {
+      logo?: Express.Multer.File[];
+      signature?: Express.Multer.File[];
+    },
+  ) {
+    const savedImages = await this.imageService.saveImages(files);
+    const pdf = this.printerService.generatePdf(
+      getSalaryCertificateReport(createPdfDto, savedImages),
+    );
+    await this.imageService.deleteImages(files);
+    await this.saveFileService.saveFile(
+      `salary-certificate-${createPdfDto.employeeName}.pdf`,
+      pdf.toString(),
+    );
+    pdf.info.Title = `salary-certificate-${createPdfDto.employeeName}`;
+    return pdf;
+  }
+
+  async createWorkScheduleCertificate(
+    createPdfDto: CreateWorkScheduleCertificateDto,
+    files: {
+      logo?: Express.Multer.File[];
+      signature?: Express.Multer.File[];
+    },
+  ) {
+    const savedImages = await this.imageService.saveImages(files);
+    const pdf = this.printerService.generatePdf(
+      getWorkScheduleCertificateReport(createPdfDto, savedImages),
+    );
+    await this.imageService.deleteImages(files);
+    await this.saveFileService.saveFile(
+      `work-schedule-certificate-${createPdfDto.employeeName}.pdf`,
+      pdf.toString(),
+    );
+    pdf.info.Title = `work-schedule-certificate-${createPdfDto.employeeName}`;
     return pdf;
   }
 

@@ -1,9 +1,11 @@
 import { Content } from 'pdfmake/interfaces';
-import { Footer } from '../../entities/pdf.entity';
 
-export const getFooter = (footerData?: Footer): Content => {
+export const getFooter = (footerData?: string): Content => {
   const footerText: Content = {
-    text: `This document is a ${footerData?.content.toLowerCase() ?? 'draft'} and does not represent a job offer.`,
+    text:
+      footerData && footerData.length > 0
+        ? footerData
+        : `This document is a draft and does not represent a job offer.`,
     alignment: 'center',
     italics: true,
     margin: [0, 0, 0, 20],

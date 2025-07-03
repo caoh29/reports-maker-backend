@@ -1,51 +1,24 @@
 import { Content } from 'pdfmake/interfaces';
-import { Sign } from '../../entities/pdf.entity';
-import { COLOR_YELLOW_HEX } from 'src/lib/constants';
-// import { EmployeeEntity } from 'src/employee/entities/employee.entity';
 
-// export const getSignature = (signer?: EmployeeEntity): Content => {
-export const getSignature = (signData?: Sign): Content => {
-  const signature: Content = {
-    stack: [
-      {
-        text: 'Regards,\n\n\n',
-      },
-      {
-        image: signData?.signatureUrl ?? 'src/assets/100x100.png',
-        width: 50,
-        height: 50,
-      },
-      {
-        text: '_______________________________',
-        style: {
-          bold: true,
-        },
-      },
-      {
-        text: signData?.signerName ?? '[Signer Name]',
-        style: {
-          bold: true,
-          background: signData?.signerName ? undefined : COLOR_YELLOW_HEX,
-        },
-      },
-      {
-        text: signData?.signerRole ?? '[Signer Role]',
-        style: {
-          background: signData?.signerRole ? undefined : COLOR_YELLOW_HEX,
-        },
-      },
-      {
-        text: signData?.companyName ?? '[Company Name]',
-        style: {
-          background: signData?.companyName ? undefined : COLOR_YELLOW_HEX,
-        },
-      },
-    ],
+interface Props {
+  signature?: string[];
+}
+
+export const getSignature = ({ signature }: Props): Content => {
+  // If signature is not provided, use a default image
+  const signatureImage =
+    signature && signature.length > 0 ? signature[0] : 'src/assets/100x100.png';
+
+  const signatureContent: Content = {
+    image: signatureImage,
+    width: 50,
+    height: 50,
     alignment: 'left',
-    margin: [0, 40, 0, 0],
+    marginLeft: 20,
   };
 
   return {
-    columns: [signature],
+    columns: [signatureContent],
+    // margin: [20, 20, 20, 50],
   };
 };
