@@ -110,6 +110,7 @@ export const getSalaryCertificateReport = (
     },
     getSignature({
       signature: files?.signature,
+      signerName: options?.signerName,
     }),
     getSigner({
       signerName: options?.signerName,

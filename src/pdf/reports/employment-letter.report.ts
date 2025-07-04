@@ -79,7 +79,7 @@ export const getEmploymentLetterReport = (
             background: options?.role ? undefined : COLOR_YELLOW_HEX,
           },
         },
-        'in the ',
+        ' in the ',
         {
           text: options?.department ?? '[Employee Department]',
           style: {
@@ -97,6 +97,7 @@ export const getEmploymentLetterReport = (
     },
     getSignature({
       signature: files?.signature,
+      signerName: options?.signerName,
     }),
     getSigner({
       signerName: options?.signerName,

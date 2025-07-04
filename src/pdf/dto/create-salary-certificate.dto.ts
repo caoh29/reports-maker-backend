@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { CreateBaseReportDto } from './base-report.dto';
 
 export class CreateSalaryCertificateDto extends CreateBaseReportDto {
@@ -19,6 +19,6 @@ export class CreateSalaryCertificateDto extends CreateBaseReportDto {
   contractType: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  salary: number;
+  @IsString()
+  salary: string;
 }

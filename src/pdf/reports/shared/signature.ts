@@ -2,19 +2,27 @@ import { Content } from 'pdfmake/interfaces';
 
 interface Props {
   signature?: string[];
+  signerName?: string;
 }
 
-export const getSignature = ({ signature }: Props): Content => {
+export const getSignature = ({ signature, signerName }: Props): Content => {
   // If signature is not provided, use a default image
   const signatureImage =
-    signature && signature.length > 0 ? signature[0] : 'src/assets/100x100.png';
+    signature && signature.length > 0
+      ? signature[0]
+      : signerName
+        ? null
+        : 'src/assets/70x50.png';
 
+  if (!signatureImage) {
+    return '';
+  }
   const signatureContent: Content = {
     image: signatureImage,
-    width: 50,
+    width: 70,
     height: 50,
     alignment: 'left',
-    marginLeft: 20,
+    marginLeft: 40,
   };
 
   return {
