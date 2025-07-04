@@ -15,6 +15,7 @@ export class SaveFileService {
       // Write the content to the file
       await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
       await fsPromises.writeFile(filePath, content);
+      console.log(`File ${fileName} saved successfully at ${filePath}`);
     }
     return filePath;
   }
