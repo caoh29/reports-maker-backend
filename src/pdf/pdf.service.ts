@@ -19,6 +19,7 @@ import { CreateEmploymentLetterDto } from './dto/create-employment-letter.dto';
 import { CreateIncomeProofDto } from './dto/create-income-proof.dto';
 import { CreateSalaryCertificateDto } from './dto/create-salary-certificate.dto';
 import { CreateWorkScheduleCertificateDto } from './dto/create-work-schedule-certificate.dto';
+import { REPORTS } from 'src/lib/constants';
 // import { DateFormatter } from 'src/lib/helpers/date-formatter';
 
 @Injectable()
@@ -29,6 +30,11 @@ export class PdfService {
     private readonly imageService: ImageService,
     // private readonly employeeService: EmployeeService,
   ) { }
+
+  async getReports() {
+    const reports = await Promise.resolve(REPORTS);
+    return reports;
+  }
 
   async getEmploymentLetterTemplate() {
     const pdf = this.printerService.generatePdf(getEmploymentLetterReport());

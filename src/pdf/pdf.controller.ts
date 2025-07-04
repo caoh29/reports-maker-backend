@@ -23,6 +23,13 @@ import { CreateWorkScheduleCertificateDto } from './dto/create-work-schedule-cer
 export class PdfController {
   constructor(private readonly pdfService: PdfService) { }
 
+  @Get('reports')
+  async getReports(@Res() response: Response) {
+    const reports = await this.pdfService.getReports();
+    response.setHeader('Content-Type', 'application/json');
+    response.send(reports);
+  }
+
   @Get('employment-letter')
   async getEmploymentLetter(@Res() response: Response) {
     const pdf = await this.pdfService.getEmploymentLetterTemplate();
